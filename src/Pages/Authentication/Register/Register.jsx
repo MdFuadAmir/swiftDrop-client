@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
@@ -15,6 +15,9 @@ const Register = () => {
   const {creatUser,updateUserProfile} = useAuth();
   const [profilePic,setProfilePic] = useState('');
   const axiosInstance = useAxios();
+    const location = useLocation();
+  const navigate = useNavigate();
+  const from = location?.state?.from || '/';
 
   const handleImageUpload = async(e) =>{
     const image = e.target.files[0];
@@ -46,6 +49,7 @@ const Register = () => {
       updateUserProfile(userProfile)
       .then(()=>{
         console.log('profile name,picture updaed');
+        navigate(from);
       })
       .catch(error =>{
         console.log(error);
@@ -122,7 +126,7 @@ const Register = () => {
             )}
           </div>
           {/* submit button */}
-          <button className="btn bg-green-500 border-none mt-4">Login</button>
+          <button className="btn bg-green-500 border-none mt-4">Sign Up !</button>
           {/* troggl to sign up page */}
           <p className="text-amber-400 mt-4 text-center">
             Already have an account ?{" "}

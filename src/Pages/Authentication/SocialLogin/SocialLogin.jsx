@@ -25,7 +25,6 @@ const SocialLogin = () => {
         const res = await axiosInstance.post('/users',userInfo);
         console.log('user update info', res.data);
         console.log('user:', result.user);
-
         navigate(from);
       })
       .catch((error) => {

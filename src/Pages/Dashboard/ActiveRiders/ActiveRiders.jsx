@@ -3,31 +3,35 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { FaTimesCircle } from "react-icons/fa";
 
-
 const ActiveRiders = () => {
-    const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
 
   // Fetch active riders
-  const { data: riders = [], isLoading,refetch, isError } = useQuery({
+  const {
+    data: riders = [],
+    isLoading,
+    refetch,
+    isError,
+  } = useQuery({
     queryKey: ["active-riders"],
     queryFn: async () => {
       const res = await axiosSecure.get("/riders/active-riders");
       return res.data;
     },
   });
- 
-  const handleDeactivate = async (id,action) => {
+
+  const handleDeactivate = async (id, action) => {
     try {
-    const confirm = await Swal.fire({
-      title: "Are you sure?",
-      text: "This rider will be deactivated!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, deactivate!",
-    });
-    if (!confirm.isConfirmed) return;
+      const confirm = await Swal.fire({
+        title: "Are you sure?",
+        text: "This rider will be deactivated!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, deactivate!",
+      });
+      if (!confirm.isConfirmed) return;
 
       await axiosSecure.patch(`/riders/${id}/status`, { status: action });
       Swal.fire("Done!", "Rider has been deactivated.", "success");
@@ -37,11 +41,15 @@ const ActiveRiders = () => {
     }
   };
 
-  if (isLoading) return <span className="loading loading-bars loading-lg"></span>;
-  if (isError) return <p className="text-center text-red-500 p-4">Error loading riders!</p>;
-
+  if (isLoading)
+    return <span className="loading loading-bars loading-lg"></span>;
+  if (isError)
     return (
-         <div className="overflow-x-auto p-4 md:p-12">
+      <p className="text-center text-red-500 p-4">Error loading riders!</p>
+    );
+
+  return (
+    <div className="overflow-x-auto p-4 md:p-12">
       <h2 className="text-2xl font-bold mb-4 underline">Active Riders</h2>
       <table className="table w-full">
         <thead className="bg-gray-100">
@@ -54,6 +62,7 @@ const ActiveRiders = () => {
             <th>Region</th>
             <th>Age</th>
             <th>NID</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -68,12 +77,13 @@ const ActiveRiders = () => {
               <td>{rider.region}</td>
               <td>{rider.age}</td>
               <td>{rider.nid}</td>
+              <td>{rider.status}</td>
               <td>
                 <button
                   onClick={() => handleDeactivate(rider._id)}
                   className="btn btn-xs btn-error"
                 >
-                    <FaTimesCircle color="white"/>
+                  <FaTimesCircle color="white" />
                 </button>
               </td>
             </tr>
@@ -88,7 +98,7 @@ const ActiveRiders = () => {
         </tbody>
       </table>
     </div>
-    );
+  );
 };
 
 export default ActiveRiders;

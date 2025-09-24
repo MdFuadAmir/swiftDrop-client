@@ -7,9 +7,12 @@ import {
   FaUserEdit,
   FaUserCheck,
   FaUserClock,
+  FaUserShield,
 } from "react-icons/fa";
+import useUserRole from "../Hooks/useUserRole";
 
 const DashboardLayout = () => {
+  const {role,roleLoading} = useUserRole();
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -99,8 +102,13 @@ const DashboardLayout = () => {
                 <FaUserEdit className="inline mr-2" size={20}/> Update Profile
               </NavLink>
             </li>
-            {/*  */}
-            <li>
+{/* !roleLoading && role === 'admin' */}
+            {
+              roleLoading ? (
+    <li className="py-2 text-center text-gray-500">Loading...</li>
+  ) : role === "admin"  &&
+              <>
+              <li>
               <NavLink
                 to="/dashboard/active-riders"
                 className={({ isActive }) =>
@@ -110,7 +118,6 @@ const DashboardLayout = () => {
                 <FaUserCheck className="inline mr-2" size={20}/> Active Riders
               </NavLink>
             </li>
-            {/*  */}
             <li>
               <NavLink
                 to="/dashboard/pending-riders"
@@ -121,6 +128,19 @@ const DashboardLayout = () => {
                 <FaUserClock className="inline mr-2" size={20}/> Pending Riders
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/dashboard/makeAdmin"
+                className={({ isActive }) =>
+                  isActive ? "text-green-500" : "text-black"
+                }
+              >
+                <FaUserShield className="inline mr-2" size={20}/> Make Admin
+              </NavLink>
+            </li>
+              </>
+            }
+            
           </div>
         </ul>
       </div>

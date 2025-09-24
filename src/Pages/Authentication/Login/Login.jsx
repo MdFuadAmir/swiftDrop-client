@@ -64,7 +64,7 @@ const Login = () => {
           {/* troggl to sign up page */}
           <p className="text-amber-400 mt-4 text-center">
             New Hare ?{" "}
-            <Link to="/signUp" className="font-bold text-amber-600">
+            <Link state={{from}} to="/signUp" className="font-bold text-amber-600">
               Creat a Account
             </Link>
           </p>
