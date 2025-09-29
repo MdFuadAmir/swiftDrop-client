@@ -19,6 +19,11 @@ import ActiveRiders from "../Pages/Dashboard/ActiveRiders/ActiveRiders";
 import MakeAdmin from "../Pages/Dashboard/MakeAdmin/MakeAdmin";
 import Forbidden from "../Pages/Forbidden/Forbidden";
 import AdminRoute from "../Routes/AdminRoute";
+import AssignRider from "../Pages/Dashboard/AssignRider/AssignRider";
+import PendingDeliveries from "../Pages/Dashboard/PendingDeliveries/PendingDeliveries";
+import RiderRoutes from "../Routes/RiderRoutes";
+import CompletedDeliveries from "../Pages/Dashboard/CompletedDeliveries/CompletedDeliveries";
+import MyEarning from "../Pages/Dashboard/MyEarning/MyEarning";
 
 export const router = createBrowserRouter([
     {
@@ -85,20 +90,35 @@ export const router = createBrowserRouter([
                 path:'profile',
                 Component: UpdateProfile
             },
+            // admin only routes
             {
                 path:'active-riders',
                 element: <AdminRoute><ActiveRiders></ActiveRiders></AdminRoute>,
-                // Component: ActiveRiders
             },
             {
                 path:'pending-riders',
                 element: <AdminRoute><PendingRiders></PendingRiders></AdminRoute>,
-                // Component: PendingRiders
             },
             {
                 path:'makeAdmin',
                 element: <AdminRoute><MakeAdmin></MakeAdmin></AdminRoute>,
-                // Component: MakeAdmin,
+            },
+            {
+                path: 'assign-riders',
+                element: <AdminRoute><AssignRider></AssignRider></AdminRoute>
+            },
+            // rider only routes
+            {
+                path: 'pending-deliveries',
+                element: <RiderRoutes><PendingDeliveries></PendingDeliveries></RiderRoutes>
+            },
+            {
+                path: 'completed-deliveries',
+                element: <RiderRoutes><CompletedDeliveries></CompletedDeliveries></RiderRoutes>
+            },
+            {
+                path: 'my-earning',
+                element: <RiderRoutes><MyEarning></MyEarning></RiderRoutes>
             },
             
         ]

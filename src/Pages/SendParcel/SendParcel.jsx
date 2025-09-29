@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { useNavigate } from "react-router";
+import useTrackingLoggers from "../../Hooks/useTrackingLoggers";
 
 const SendParcel = () => {
   const { register, handleSubmit, watch } = useForm({
@@ -13,6 +15,8 @@ const SendParcel = () => {
   const [districts, setDistrict] = useState([]);
   const [cost, setCost] = useState(0);
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
+  const {logTracking} = useTrackingLoggers();
 
   //   district name
   useEffect(() => {
@@ -63,7 +67,7 @@ const SendParcel = () => {
     const finalData = {
       ...data,
       created_by: user?.email,
-      trackingId: generateTrackingId(),
+      // trackingId: generateTrackingId(),
       cost,
       status: "Processing",
     };
@@ -83,15 +87,17 @@ const SendParcel = () => {
       cancelButtonText: "Continue Editing",
     }).then((result) => {
       if (result.isConfirmed) {
+        const trackingId = generateTrackingId()
         const parcelData = {
           ...finalData,
           payment_status: "unpaid",
           delivery_status: "not_collected",
           creation_date: new Date().toISOString(),
+          trackingId
         };
         // save data to backend
         axiosSecure.post("/parcels", parcelData)
-        .then((res) => {
+        .then(async(res) => {
           if (res.data.insertedId) {
             // redirecting to the payment page
             console.log(res.data);
@@ -102,6 +108,13 @@ const SendParcel = () => {
               timer: 1500,
               showConfirmButton: false,
             });
+            await logTracking({
+              trackingId: parcelData.trackingId,
+              status:"parcel_created",
+              details:`Created by ${user.displayName}`,
+              updated_by:user.email
+            })
+            navigate('/dashboard/myParcels')
           }
         });
       }
@@ -166,7 +179,7 @@ const SendParcel = () => {
                 <label className="block mb-1">Parcel Weight (kg)</label>
                 <input
                   type="tel"
-                  {...register("parcelWeight", { required: true })}
+                  {...register("parcelWeight", { required: type === "non-document" })}
                   className="input input-bordered w-full"
                   placeholder="Enter parcel weight"
                   disabled={type === "document"}
