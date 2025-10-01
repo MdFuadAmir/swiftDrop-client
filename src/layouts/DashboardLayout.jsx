@@ -12,11 +12,13 @@ import {
   FaTasks,
   FaCheckCircle,
   FaWallet,
+  FaHome,
 } from "react-icons/fa";
 import useUserRole from "../Hooks/useUserRole";
 
 const DashboardLayout = () => {
   const { role, roleLoading } = useUserRole();
+
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -63,6 +65,16 @@ const DashboardLayout = () => {
           <SwiftdropLogo></SwiftdropLogo>
           <div className="divider divider-primary"></div>
           <div className="space-y-2">
+            <li>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  isActive ? "text-green-500" : "text-black"
+                }
+              >
+                <FaHome className="inline mr-2" size={20} /> Home
+              </NavLink>
+            </li>
             <li>
               <NavLink
                 to="/dashboard/myParcels"
