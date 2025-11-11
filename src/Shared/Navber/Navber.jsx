@@ -1,16 +1,17 @@
 import { Link, NavLink } from "react-router";
 import SwiftdropLogo from "../SwiftDropLogo/SwiftdropLogo";
 import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Navber = () => {
   const { user, logOut } = useAuth();
   const handleLogout = () => {
     logOut()
       .then(() => {
-        console.log('sign out');
+        toast.success("logOut Success !");
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error.message);
       });
   };
   const navLinks = (
@@ -24,22 +25,20 @@ const Navber = () => {
       <li>
         <NavLink to="/sendParcel">Sand A Parcel</NavLink>
       </li>
-      {
-        user && <li><NavLink to="/dashboard">Dashboard</NavLink></li>
-      } 
-    
-        {
-        user && <li><NavLink to="/beARider">Be A Ride</NavLink> </li>
-        }
-        
-      <li>
-        <NavLink to="/">Pricing</NavLink>
-      </li>
-      
+      {user && (
+        <li>
+          <NavLink to="/beARider">Be A Ride</NavLink>
+        </li>
+      )}
+      {user && (
+        <li>
+          <NavLink to="/dashboard">Dashboard</NavLink>
+        </li>
+      )}
     </>
   );
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-linear-to-b from-gray-600 via-gray-400 to-gray-600 px-4 md:px-10 lg:px-20">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -73,7 +72,9 @@ const Navber = () => {
       </div>
       <div className="navbar-end">
         {user ? (
-          <button onClick={handleLogout} className="btn bg-green-500">LogOut</button>
+          <button onClick={handleLogout} className="btn bg-red-500">
+            LogOut
+          </button>
         ) : (
           <Link to="/login" className="btn bg-green-500">
             Login

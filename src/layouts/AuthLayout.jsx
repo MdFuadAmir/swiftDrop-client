@@ -3,7 +3,7 @@ import image from "../assets/allImages/authImage.png";
 import SwiftdropLogo from "../Shared/SwiftDropLogo/SwiftdropLogo";
 const AuthLayout = () => {
   return (
-      <div className="bg-gray-900 mx-auto max-w-7xl p-4 md:p-12">
+      <div className="bg-linear-to-br from-gray-800 to-gray-500 mx-auto md:p-12 min-h-[calc(100vh-64px)] max-w-[2520px] md:px-10 lg:px-20 p-4">
         <SwiftdropLogo></SwiftdropLogo>
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="w-full md:w-1/2">

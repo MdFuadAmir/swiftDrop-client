@@ -63,7 +63,7 @@ const Register = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className="" onSubmit={handleSubmit(onSubmit)}>
         <h1 className="text-white text-center font-bold font-serif mb-6 text-2xl">
           SignUp !
         </h1>

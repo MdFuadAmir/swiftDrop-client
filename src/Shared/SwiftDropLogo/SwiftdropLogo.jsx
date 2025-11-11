@@ -3,8 +3,8 @@ import logo from "../../assets/swiftdrop.png"
 
 const SwiftdropLogo = () => {
     return (
-        <Link to='/'>
-            <img src={logo} alt="" className="w-24"/>
+        <Link to='/' className="text-2xl font-bold uppercase text-teal-600 flex items-center">
+            <img src={logo} alt="logo" className="h-8" /> Swiftdrop
         </Link>
     );
 };

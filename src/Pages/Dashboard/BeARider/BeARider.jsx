@@ -3,11 +3,11 @@ import useAuth from "../../../Hooks/useAuth";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-import logo from "../../../assets/swiftdrop.png"
+import logo from "../../../assets/allImages/riders.png"
 
 const BeARider = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useAuth(); // ধরে নিচ্ছি এখানে {displayName, email} আসবে
+  const { user } = useAuth();
   const { register, handleSubmit, reset } = useForm();
   const [districts, setDistrict] = useState([]);
 

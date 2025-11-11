@@ -3,13 +3,13 @@ import SwiftdropLogo from "../SwiftDropLogo/SwiftdropLogo";
 
 const Footer = () => {
     return (
-        <footer className="footer footer-horizontal footer-center text-primary-content p-10 rounded-md bg-gray-900">
+        <footer className="footer footer-horizontal footer-center text-primary-content p-10 bg-linear-to-b from-gray-900 via-gray-700 to-gray-900">
   <aside>
     <SwiftdropLogo></SwiftdropLogo>
     <p className="font-bold">
-      ACME Industries Ltd.
+      Pothik Ltd.
       <br />
-      Providing reliable tech since 1992
+      Providing reliable tech since 2025
     </p>
     <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
   </aside>

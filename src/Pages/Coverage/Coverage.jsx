@@ -19,14 +19,13 @@ function ChangeView({ coords }) {
   return null;
 }
 
-
 const Coverage = () => {
-     const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(null);
-    const [filtered, setFiltered] = useState(districts);
+  const [filtered, setFiltered] = useState(districts);
   const mapRef = useRef();
 
-   const handleSearch = (value) => {
+  const handleSearch = (value) => {
     setSearch(value);
     if (value.trim() === "") {
       setFiltered(districts);
@@ -43,13 +42,13 @@ const Coverage = () => {
       setSelected([result[0].latitude, result[0].longitude]); // first match zoom
     }
   };
-    return (
-        <section className="py-12 bg-base-100">
+  return (
+    <section className="py-12 bg-base-100">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-6">
           Coverage Map (64 Districts)
         </h2>
-         {/* search bar */}
+        {/* search bar */}
         <div className="flex justify-center mb-6">
           <input
             type="text"
@@ -66,7 +65,7 @@ const Coverage = () => {
           zoom={7}
           style={{ height: "600px", width: "100%" }}
           ref={mapRef}
-          className=" rounded-2xl"
+          className="rounded-2xl"
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -100,7 +99,7 @@ const Coverage = () => {
         </MapContainer>
       </div>
     </section>
-    );
+  );
 };
 
 export default Coverage;

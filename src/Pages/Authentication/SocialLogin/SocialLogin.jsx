@@ -35,7 +35,7 @@ const SocialLogin = () => {
     <div>
       <button
         onClick={haldleGoogleSignIn}
-        className="btn rounded-full w-full flex justify-center"
+        className="btn rounded-lg w-full flex justify-center bg-teal-700 text-white border-none"
       >
         <FaGoogle size={20} className="mr-4" /> Login With Google
       </button>
