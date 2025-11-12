@@ -3,6 +3,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { FaUserMinus, FaUserShield } from "react-icons/fa";
+import DashboardTitle from "../../../Components/DashboardTitle/DashboardTitle";
 
 const MakeAdmin = () => {
   const axiosSecure = useAxiosSecure();
@@ -49,13 +50,11 @@ const MakeAdmin = () => {
   };
 
   return (
-    <div className="p-4 md:p-12">
-      <h2 className="text-2xl font-bold mb-4 text-center underline">
-        Make Admin
-      </h2>
+    <div>
+      <DashboardTitle title={"Make Admin"}/>
 
       {/* Search bar */}
-      <div className="flex justify-center mb-6">
+      <div className="mb-6">
         <input
           type="text"
           placeholder="Search by email..."
@@ -67,8 +66,8 @@ const MakeAdmin = () => {
 
       {/* Users Table */}
       <div className="overflow-x-auto">
-        <table className="table w-full">
-          <thead className="bg-gray-100">
+        <table className="table w-full max-w-4xl mx-auto">
+          <thead className="bg-gray-600 text-white">
             <tr>
               <th>Email</th>
               <th>Created At</th>

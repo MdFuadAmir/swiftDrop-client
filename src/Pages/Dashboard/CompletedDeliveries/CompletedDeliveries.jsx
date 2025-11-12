@@ -61,7 +61,7 @@ const CompletedDeliveries = () => {
     });
   };
   return (
-    <div className="p-6">
+    <div >
       <h2 className="text-2xl font-bold mb-4">Completed Deliveries</h2>
       {isLoading ? (
         <p>Loading...</p>

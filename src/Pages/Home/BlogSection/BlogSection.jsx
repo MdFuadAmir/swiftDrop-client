@@ -36,7 +36,7 @@ See how small changes in packaging and routes make a big impact.`,
         {posts.map((p, i) => (
           <div
             key={i}
-            className="bg-white rounded-xl shadow hover:shadow-lg overflow-hidden"
+            className="bg-gray-200 rounded-xl shadow hover:shadow-lg overflow-hidden"
           >
             <img
               src={p.img}

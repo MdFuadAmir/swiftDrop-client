@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaLock } from "react-icons/fa";
 const Forbidden = () => {
     return (
-         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-red-100 via-red-200 to-red-300 text-gray-800">
+         <div className="flex flex-col items-center justify-center min-h-screen bg-linear-to-r from-red-100 via-red-200 to-red-300 text-gray-800">
       <div className="bg-white shadow-xl rounded-2xl p-10 text-center max-w-lg">
         <FaLock className="text-red-500 text-6xl mx-auto mb-4" />
         <h1 className="text-5xl font-bold text-red-600">403</h1>

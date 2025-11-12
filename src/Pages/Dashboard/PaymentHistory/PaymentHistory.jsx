@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import DashboardTitle from "../../../Components/DashboardTitle/DashboardTitle";
 
 const PaymentHistory = () => {
     const {user} = useAuth();
@@ -18,11 +19,11 @@ const PaymentHistory = () => {
     }
 
     return (
-          <div className="p-4 bg-gray-100 rounded-xl mt-12">
-      <h2 className="text-xl font-bold mb-4 text-center">Payment History</h2>
+          <div>
+      <DashboardTitle title={"Payment History"}/>
       <div className="overflow-x-auto">
         <table className="table">
-          <thead className="bg-green-500 text-white">
+          <thead className="bg-gray-600 text-white">
             <tr>
               <th>#</th>
               <th>Parcel ID</th>

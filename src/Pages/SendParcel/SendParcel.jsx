@@ -6,9 +6,15 @@ import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
 import useTrackingLoggers from "../../Hooks/useTrackingLoggers";
+import toast from "react-hot-toast";
 
 const SendParcel = () => {
-  const { register, handleSubmit, watch } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({
     defaultValues: { SenderPickupWirehouse: "Dhaka", type: "document" },
   });
   const { user } = useAuth();
@@ -16,9 +22,8 @@ const SendParcel = () => {
   const [cost, setCost] = useState(0);
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const {logTracking} = useTrackingLoggers();
+  const { logTracking } = useTrackingLoggers();
 
-  //   district name
   useEffect(() => {
     fetch("warehouses.json")
       .then((res) => res.json())
@@ -28,7 +33,6 @@ const SendParcel = () => {
       });
   }, []);
 
-  // Tracking ID generator function (frontend এ)
   function generateTrackingId() {
     const prefix = "BD";
     const date = new Date();
@@ -45,7 +49,6 @@ const SendParcel = () => {
   const delivery = watch("reciverPickupWirehouse");
 
   useEffect(() => {
-    // cost calculation
     if (!type) return;
 
     const withinCity = sender === delivery;
@@ -61,17 +64,13 @@ const SendParcel = () => {
     }
   }, [type, weight, sender, delivery]);
 
-  // submit button
   const onSubmit = (data) => {
-    // final data/////////
     const finalData = {
       ...data,
       created_by: user?.email,
-      // trackingId: generateTrackingId(),
       cost,
       status: "Processing",
     };
-    // sewwtalart//////////
     Swal.fire({
       title: "Order Confirmed!",
       html: `
@@ -87,34 +86,25 @@ const SendParcel = () => {
       cancelButtonText: "Continue Editing",
     }).then((result) => {
       if (result.isConfirmed) {
-        const trackingId = generateTrackingId()
+        const trackingId = generateTrackingId();
         const parcelData = {
           ...finalData,
           payment_status: "unpaid",
           delivery_status: "not_collected",
           creation_date: new Date().toISOString(),
-          trackingId
+          trackingId,
         };
         // save data to backend
-        axiosSecure.post("/parcels", parcelData)
-        .then(async(res) => {
+        axiosSecure.post("/parcels", parcelData).then(async (res) => {
           if (res.data.insertedId) {
-            // redirecting to the payment page
-            console.log(res.data);
-            Swal.fire({
-              title: "Redirecting...",
-              text:"Proceeding to payment getway.",
-              icon: "success",
-              timer: 1500,
-              showConfirmButton: false,
-            });
+            toast.success("Proceeding to payment getway.");
             await logTracking({
               trackingId: parcelData.trackingId,
-              status:"parcel_created",
-              details:`Created by ${user.displayName}`,
-              updated_by:user.email
-            })
-            navigate('/dashboard/myParcels')
+              status: "parcel_created",
+              details: `Created by ${user.displayName}`,
+              updated_by: user.email,
+            });
+            navigate("/dashboard/myParcels");
           }
         });
       }
@@ -123,10 +113,10 @@ const SendParcel = () => {
 
   return (
     <section>
-      <div className="mx-auto px-4 bg-gray-100 rounded-2xl">
+      <div className="mx-auto px-4 my-12 py-12 rounded-2xl bg-gray-200">
         {/* heading */}
         <div className="p-4">
-          <h2 className="text-3xl font-bold text-center mt-4">Add Parcel</h2>
+          <h2 className="text-3xl font-bold text-center mt-4">Send Parcel</h2>
           <p className="text-center text-gray-500 mb-8">
             Door to Door Delivery – Fill in pickup & delivery details
           </p>
@@ -171,7 +161,11 @@ const SendParcel = () => {
                   className="input input-bordered w-full"
                   placeholder="Enter parcel name"
                 />
-                {/* {errors.parcelName.type === 'required' && <span>This field is required</span>} */}
+                {errors?.parcelName?.type === "required" && (
+                  <span className="p-2 text-red-500">
+                    This field is required
+                  </span>
+                )}
               </div>
 
               {/* Parcel Weight */}
@@ -179,20 +173,26 @@ const SendParcel = () => {
                 <label className="block mb-1">Parcel Weight (kg)</label>
                 <input
                   type="tel"
-                  {...register("parcelWeight", { required: type === "non-document" })}
+                  {...register("parcelWeight", {
+                    required: type === "non-document",
+                  })}
                   className="input input-bordered w-full"
                   placeholder="Enter parcel weight"
                   disabled={type === "document"}
                 />
-                {/* {errors.parcelWeight.type === 'required' && <span>This field is required</span>} */}
+                {errors?.parcelWeight?.type === "required" && (
+                  <span className="p-2 text-red-500">
+                    This field is required
+                  </span>
+                )}
               </div>
             </div>
           </div>
           {/* parcel info end */}
           <div className="divider"></div>
-          {/* /////////////////// */}
+          {/* ============= // =============== */}
           <div className="flex flex-col md:flex-row gap-4 md:gap-8 lg:gap-12">
-            {/* Sender Info ///////////////////////////// */}
+            {/* ================= Sender Info ================ */}
             <div className="w-full md:w-1/2">
               <h3 className="text-xl font-semibold mb-4">Sender Info</h3>
               <div className="gap-4">
@@ -207,7 +207,11 @@ const SendParcel = () => {
                       placeholder="Sender Name"
                       className="input input-bordered w-full"
                     />
-                    {/* {errors.senderName.type === 'required' && <span>This field is required</span>} */}
+                    {errors?.senderName?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                   {/*Sender Pickup Wire house  */}
                   <div>
@@ -224,6 +228,11 @@ const SendParcel = () => {
                         </option>
                       ))}
                     </select>
+                    {errors?.SenderPickupWirehouse?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                   {/* Sender Address */}
                   <div>
@@ -234,7 +243,11 @@ const SendParcel = () => {
                       placeholder="address"
                       className="input input-bordered w-full"
                     />
-                    {/* {errors.senderAddress.type === 'required' && <span>This field is required</span>} */}
+                    {errors?.senderAddress?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                   {/* sender Contact number */}
                   <div>
@@ -245,7 +258,11 @@ const SendParcel = () => {
                       placeholder="contact number"
                       className="input input-bordered w-full"
                     />
-                    {/* {errors.senderContact.type === 'required' && <span>This field is required</span>} */}
+                    {errors?.senderContact?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="mt-2 space-y-2">
@@ -263,6 +280,11 @@ const SendParcel = () => {
                       <option value="Nastik">Nastik</option>
                       <option value="Other">Other</option>
                     </select>
+                    {errors?.SenderRegion?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                   {/* sender pickup instruction */}
                   <div>
@@ -273,7 +295,11 @@ const SendParcel = () => {
                       {...register("pickupInstruction", { required: true })}
                       className="textarea textarea-bordered w-full"
                     ></textarea>
-                    {/* {errors.pickupInstruction.type === 'required' && <span>This field is required</span>} */}
+                    {errors?.pickupInstruction?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -292,7 +318,11 @@ const SendParcel = () => {
                       placeholder="reciver name"
                       className="input input-bordered w-full"
                     />
-                    {/* {errors.reciverName.type === 'required' && <span>This field is required</span>} */}
+                    {errors?.reciverName?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                   {/*Reciver Pickup Wire house  */}
                   <div>
@@ -311,6 +341,11 @@ const SendParcel = () => {
                         </option>
                       ))}
                     </select>
+                    {errors?.reciverPickupWirehouse?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                   {/* Reciver Address */}
                   <div>
@@ -323,7 +358,11 @@ const SendParcel = () => {
                       placeholder="address"
                       className="input input-bordered w-full"
                     />
-                    {/* {errors.reciverAddress.type === 'required' && <span>This field is required</span>} */}
+                    {errors?.reciverAddress?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                   {/* Reciver Contact number */}
                   <div>
@@ -334,7 +373,11 @@ const SendParcel = () => {
                       placeholder="contact number"
                       className="input input-bordered w-full"
                     />
-                    {/* {errors.reciverContact.type === 'required' && <span>This field is required</span>} */}
+                    {errors?.reciverContact?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="mt-2 space-y-2">
@@ -365,7 +408,11 @@ const SendParcel = () => {
                       placeholder="delivary Instruction"
                       className="textarea textarea-bordered w-full"
                     ></textarea>
-                    {/* {errors.delivaryInstruction.type === 'required' && <span>This field is required</span>} */}
+                    {errors?.delivaryInstruction?.type === "required" && (
+                      <span className="text-red-500 p-2">
+                        This field is required
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

@@ -2,6 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { FaTimesCircle } from "react-icons/fa";
+import ErrorPage from "../../../Components/ErrorPage/ErrorPage";
+import Loading from "../../../Components/Loading/Loading";
+import DashboardTitle from "../../../Components/DashboardTitle/DashboardTitle";
 
 const ActiveRiders = () => {
   const axiosSecure = useAxiosSecure();
@@ -42,17 +45,17 @@ const ActiveRiders = () => {
   };
 
   if (isLoading)
-    return <span className="loading loading-bars loading-lg"></span>;
+    return <Loading/>;
   if (isError)
     return (
-      <p className="text-center text-red-500 p-4">Error loading riders!</p>
+      <ErrorPage/>
     );
 
   return (
-    <div className="overflow-x-auto p-4 md:p-12">
-      <h2 className="text-2xl font-bold mb-4 underline">Active Riders</h2>
+    <div className="overflow-x-auto">
+      <DashboardTitle title={"Active Riders"}/>
       <table className="table w-full">
-        <thead className="bg-gray-100">
+        <thead className="bg-gray-600 text-white">
           <tr>
             <th>#</th>
             <th>Name</th>

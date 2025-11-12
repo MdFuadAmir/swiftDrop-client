@@ -39,15 +39,32 @@ const Coverage = () => {
     );
     setFiltered(result);
     if (result.length > 0) {
-      setSelected([result[0].latitude, result[0].longitude]); // first match zoom
+      setSelected([result[0].latitude, result[0].longitude]);
     }
   };
   return (
-    <section className="py-12 bg-base-100">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-6">
-          Coverage Map (64 Districts)
-        </h2>
+    <div className="py-12 px-4 flex flex-col-reverse md:flex-row">
+      <div className="w-full md:w-1/2">
+      <h2 className="text-3xl font-bold text-center mb-6 underline">
+        Coverage Map (64 Districts)
+      </h2>
+      <div>
+        <h3 className="font-bold text-xl mb-6">All Locations:</h3>
+        <div className="grid grid-cols-2 gap-2">
+          {
+            districts.map((dist) =><div className="p-4">
+              <p className="font-bold flex items-center gap-2">District: <span className="text-sm">{dist.district}</span></p>
+              <p className="font-bold flex items-center gap-2">Region: <span className="text-sm">{dist.region}</span></p>
+              <p className="font-bold flex items-center gap-2">City: <span className="text-sm">{dist.city}</span></p>
+              <p className="font-bold">Covered_Area: <span className="text-sm">{dist.covered_area.map(cv=><li className="pl-6">{cv}</li>)}</span></p>
+              <p className="font-bold flex items-center gap-2">Status: <span className="text-sm text-green-500">{dist.status}</span></p>
+
+            </div>)
+          }
+        </div>
+      </div>
+      </div>
+      <div className="px-4 w-full md:w-1/2">
         {/* search bar */}
         <div className="flex justify-center mb-6">
           <input
@@ -55,7 +72,7 @@ const Coverage = () => {
             placeholder="Search district/city..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
-            className="input input-bordered w-1/2"
+            className="input input-bordered w-full"
           />
         </div>
 
@@ -98,7 +115,7 @@ const Coverage = () => {
           <ChangeView coords={selected} />
         </MapContainer>
       </div>
-    </section>
+    </div>
   );
 };
 

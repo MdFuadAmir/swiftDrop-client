@@ -38,7 +38,7 @@ const Navber = () => {
     </>
   );
   return (
-    <div className="navbar bg-linear-to-b from-gray-600 via-gray-400 to-gray-600 px-4 md:px-10 lg:px-20">
+    <div className="navbar bg-linear-to-b from-gray-300 via-gray-100 to-gray-300 px-4 md:px-10 lg:px-20">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

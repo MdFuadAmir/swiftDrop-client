@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { FaMotorcycle } from "react-icons/fa";
-import Swal from "sweetalert2";
 import { useState } from "react";
 import useTrackingLoggers from "../../../Hooks/useTrackingLoggers";
 import useAuth from "../../../Hooks/useAuth";
+import Loading from "../../../Components/Loading/Loading";
+import toast from "react-hot-toast";
+import DashboardTitle from "../../../Components/DashboardTitle/DashboardTitle";
 
 const AssignRider = () => {
   const axiosSecure = useAxiosSecure();
@@ -13,7 +15,6 @@ const AssignRider = () => {
   const { logTracking } = useTrackingLoggers();
   const { user } = useAuth();
 
-  // 🔹 Load Parcels (paid + not_collected)
   const {
     data: parcels = [],
     isLoading: parcelLoading,
@@ -29,11 +30,9 @@ const AssignRider = () => {
       );
     },
   });
-
-  // 🔹 Load Riders (based on selected parcel's wirehouse)
   const { data: riders = [], isLoading: riderLoading } = useQuery({
     queryKey: ["riders", selectedParcel?.reciverPickupWirehouse],
-    enabled: !!selectedParcel, // Only fetch riders when a parcel is selected
+    enabled: !!selectedParcel,
     queryFn: async () => {
       const wirehouse = selectedParcel.reciverPickupWirehouse;
       const res = await axiosSecure.get(
@@ -42,8 +41,6 @@ const AssignRider = () => {
       return res.data;
     },
   });
-
-  // 🔹 Open Modal
   const openAssignModal = (parcel) => {
     setSelectedParcel(parcel);
     document.getElementById("assign_rider_modal").showModal();
@@ -54,36 +51,27 @@ const AssignRider = () => {
       await axiosSecure.patch(`/parcels/${selectedParcel._id}/assign`, {
         riderId,
       });
-      Swal.fire("✅ Success", "Rider assigned successfully!", "success");
+      toast.success("Success", "Rider assigned successfully!", "success")
       await logTracking({
         trackingId: selectedParcel.trackingId,
         status: "rider_assigned",
         details: `Assigned to ${selectedRider?.name}`,
         updated_by: user.email,
       });
-
-      // Modal বন্ধ করবো
       document.getElementById("assign_rider_modal").close();
-
-      // Parcel list refresh করার জন্য refetch করবেন
-      // react-query ব্যবহার করছেন তাই refetch useQuery থেকে destructure করে নিন
-      // example: const { data: parcels = [], refetch } = useQuery(...)
-      // তারপর এখানে refetch();
       refetch();
     } catch (error) {
-      console.error(error);
-      Swal.fire("❌ Error", "Failed to assign rider!", "error");
+      toast.error(error.message);
     }
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Assign Riders</h2>
-
+    <div>
+      <DashboardTitle title={"Assign Riders"}/>
       {/* Parcels Table */}
       <div className="overflow-x-auto">
-        <table className="table table-sm w-full">
-          <thead className="bg-gray-100">
+        <table className="table  w-full">
+          <thead className="bg-gray-600 text-white">
             <tr>
               <th>#</th>
               <th>Tracking Id</th>
@@ -151,7 +139,7 @@ const AssignRider = () => {
           </h3>
 
           {riderLoading ? (
-            <p>Loading riders...</p>
+            <Loading/>
           ) : riders.length > 0 ? (
             <table className="table w-full">
               <thead>

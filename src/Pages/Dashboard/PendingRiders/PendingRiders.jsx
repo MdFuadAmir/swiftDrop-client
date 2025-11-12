@@ -3,9 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { FaCheckCircle, FaEye, FaTimesCircle } from "react-icons/fa";
+import Loading from "../../../Components/Loading/Loading";
+import DashboardTitle from "../../../Components/DashboardTitle/DashboardTitle";
 
 const PendingRiders = () => {
-      const axiosSecure = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
 
   // Fetch pending riders
   const {
@@ -22,7 +24,7 @@ const PendingRiders = () => {
   });
 
   if (isPending) {
-    return <span className="loading loading-bars loading-lg"></span>;
+    return <Loading />;
   }
 
   // View Rider Details
@@ -30,40 +32,54 @@ const PendingRiders = () => {
     Swal.fire({
       title: rider.name,
       html: `
-        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">Email:</span> ${rider.email || "—"}</div>
-        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">Contact:</span> ${rider.contact || "—"}</div>
-        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">District:</span> ${rider.wirehouse || "—"}</div>
-        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">Region:</span> ${rider.region || "—"}</div>
-        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">Nid no:</span> ${rider.nid || "—"}</div>
-        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">Age:</span> ${rider.age || "—"}</div>
+        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">Email:</span> ${
+          rider.email || "—"
+        }</div>
+        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">Contact:</span> ${
+          rider.contact || "—"
+        }</div>
+        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">District:</span> ${
+          rider.wirehouse || "—"
+        }</div>
+        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">Region:</span> ${
+          rider.region || "—"
+        }</div>
+        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">Nid no:</span> ${
+          rider.nid || "—"
+        }</div>
+        <div class="text-gray-700 text-start mb-2"><span class="text-gray-950 font-bold">Age:</span> ${
+          rider.age || "—"
+        }</div>
         
               
       `,
       confirmButtonText: "Close",
     });
   };
-     // Accept / Reject Rider
+  // Accept / Reject Rider
   const handleStatusChange = async (id, action, email) => {
     try {
       await axiosSecure.patch(`/riders/${id}/status`, {
         status: action,
-        email
+        email,
       });
       refetch();
       Swal.fire(
         "Success",
-        `Rider has been ${action === "accepted" ? "active" : "inactive"} successfully.`,
+        `Rider has been ${
+          action === "accepted" ? "active" : "inactive"
+        } successfully.`,
         "success"
       );
     } catch (error) {
       Swal.fire("Error", "Could not update rider status.", error);
     }
   };
-    return (
-           <div className="overflow-x-auto p-6">
-      <h2 className="text-2xl font-bold mb-4 underline">Rider Applications</h2>
+  return (
+    <div className="overflow-x-auto">
+      <DashboardTitle title={"Rider Applications"}/>
       <table className="table w-full">
-        <thead className="bg-gray-100">
+        <thead className="bg-gray-600 text-white">
           <tr>
             <th>#</th>
             <th>Name</th>
@@ -92,19 +108,23 @@ const PendingRiders = () => {
                   onClick={() => handleView(rider)}
                   className="btn btn-xs btn-info"
                 >
-                  <FaEye color="white"/>
+                  <FaEye color="white" />
                 </button>
                 <button
-                  onClick={() => handleStatusChange(rider._id, "active",rider?.email)}
+                  onClick={() =>
+                    handleStatusChange(rider._id, "active", rider?.email)
+                  }
                   className="btn btn-xs btn-success"
                 >
-                  <FaCheckCircle color="white"/>
+                  <FaCheckCircle color="white" />
                 </button>
                 <button
-                  onClick={() => handleStatusChange(rider._id, "inactive",rider?.email)}
+                  onClick={() =>
+                    handleStatusChange(rider._id, "inactive", rider?.email)
+                  }
                   className="btn btn-xs btn-error"
                 >
-                   <FaTimesCircle color="white"/>
+                  <FaTimesCircle color="white" />
                 </button>
               </td>
             </tr>
@@ -119,7 +139,7 @@ const PendingRiders = () => {
         </tbody>
       </table>
     </div>
-    );
+  );
 };
 
 export default PendingRiders;

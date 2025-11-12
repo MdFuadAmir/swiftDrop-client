@@ -3,6 +3,8 @@ import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
+import DashboardTitle from "../../../Components/DashboardTitle/DashboardTitle";
 
 const MyParcels = () => {
   const { user } = useAuth();
@@ -29,11 +31,7 @@ const MyParcels = () => {
     if (confirm.isConfirmed) {
       axiosSecure.delete(`/parcels/${id}`).then((res) => {
         if (res.data.deletedCount) {
-          Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
+          toast.success("Your file has been deleted.")
           refetch();
         }
       });
@@ -49,14 +47,11 @@ const MyParcels = () => {
   };
 
   return (
-    <div className="p-4 md:p-8 bg-gray-100 h-full">
-      <div className="mb-12">
-        <h1 className="text-2xl font-bold text-center">My-Parcels</h1>
-        <p className="text-sm text-center">this is my parcels history</p>
-      </div>
-      <div className="overflow-x-auto bg-white p-2 md:p-4 rounded-2xl">
+    <div>
+      <DashboardTitle title={"My-Parcels"}/>
+      <div className="overflow-x-auto">
         <table className="table">
-          <thead>
+          <thead className="bg-gray-600 text-white">
             <tr>
               <th></th>
               <th>Type</th>
