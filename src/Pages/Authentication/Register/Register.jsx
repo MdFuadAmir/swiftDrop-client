@@ -2,63 +2,63 @@ import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
-import logo from "../../../assets/allImages/image-upload-icon.png"
+import logo from "../../../assets/allImages/image-upload-icon.png";
 import axios from "axios";
 import { useState } from "react";
 import useAxios from "../../../Hooks/useAxios";
+import toast from "react-hot-toast";
 const Register = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const {creatUser,updateUserProfile} = useAuth();
-  const [profilePic,setProfilePic] = useState('');
+  const { creatUser, updateUserProfile } = useAuth();
+  const [profilePic, setProfilePic] = useState("");
   const axiosInstance = useAxios();
-    const location = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
-  const from = location?.state?.from || '/';
+  const from = location?.state?.from || "/";
 
-  const handleImageUpload = async(e) =>{
+  const handleImageUpload = async (e) => {
     const image = e.target.files[0];
     const formData = new FormData();
-    formData.append('image',image);
-    const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_upload_key}`
-    const res = await axios.post(imageUploadUrl,formData);
+    formData.append("image", image);
+    const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_image_upload_key
+    }`;
+    const res = await axios.post(imageUploadUrl, formData);
     setProfilePic(res.data.data.url);
-  }
+  };
   const onSubmit = (data) => {
-    creatUser(data.email,data.password)
-    .then(async(result) =>{
-      const user = result.user;
-      // update user profile info in database
-      const userInfo = {
-        email: user.email,
-        role: 'user', //default role
-        created_at: new Date().toISOString(),
-        last_log_in: new Date().toISOString(),
-      }
-      const userRes = await axiosInstance.post('/users',userInfo);
-      console.log(userRes.data);
-      
-      // update user profile in firebase
-      const userProfile = {
-        displayName: data.name,
-        photoUrl: profilePic
-      }
-      updateUserProfile(userProfile)
-      .then(()=>{
-        console.log('profile name,picture updaed');
-        navigate(from);
+    creatUser(data.email, data.password)
+      .then(async (result) => {
+        const user = result.user;
+        toast.success("Creat Account Success !")
+        const userInfo = {
+          email: user.email,
+          role: "user", //default role
+          created_at: new Date().toISOString(),
+          last_log_in: new Date().toISOString(),
+        };
+        await axiosInstance.post("/users", userInfo);
+
+        // update user profile in firebase
+        const userProfile = {
+          displayName: data.name,
+          photoUrl: profilePic,
+        };
+        updateUserProfile(userProfile)
+          .then(() => {
+            navigate(from);
+          })
+          .catch((error) => {
+            toast.error(error.message);
+          });
       })
-      .catch(error =>{
-        console.log(error);
-      }
-      )
-    })
-    .catch(error =>{
-      console.log(error);
-    })
+      .catch((error) => {
+         toast.error(error.message);
+      });
   };
 
   return (
@@ -71,13 +71,13 @@ const Register = () => {
           {/* photo */}
           <div className="fieldset flex">
             <div className="flex">
-            <img src={logo} alt="" />
-            <input
-            onChange={handleImageUpload}
-              type="file"
-              className="rounded-full w-12 h-12 text-transparent absolute border-red-600"
-              placeholder="photo"
-            />
+              <img src={logo} alt="" />
+              <input
+                onChange={handleImageUpload}
+                type="file"
+                className="rounded-full w-12 h-12 text-transparent absolute border-red-600"
+                placeholder="photo"
+              />
             </div>
             <label className="label text-white">Your Photo</label>
           </div>
@@ -126,7 +126,9 @@ const Register = () => {
             )}
           </div>
           {/* submit button */}
-          <button className="btn bg-green-500 border-none mt-4">Sign Up !</button>
+          <button className="btn bg-green-500 border-none mt-4">
+            Sign Up !
+          </button>
           {/* troggl to sign up page */}
           <p className="text-amber-400 mt-4 text-center">
             Already have an account ?{" "}

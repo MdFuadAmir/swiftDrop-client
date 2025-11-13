@@ -23,9 +23,9 @@ const CompletedDeliveries = () => {
   const calculateEarning = (parcel) => {
     const cost = Number(parcel.cost);
     if (parcel.sender_center === parcel.receiver_center) {
-      return cost * 0.8;
+      return cost * 0.4;
     } else {
-      return cost * 0.3;
+      return cost * 0.8;
     }
   };
 
@@ -61,7 +61,7 @@ const CompletedDeliveries = () => {
     });
   };
   return (
-    <div >
+    <div>
       <h2 className="text-2xl font-bold mb-4">Completed Deliveries</h2>
       {isLoading ? (
         <p>Loading...</p>
@@ -70,7 +70,7 @@ const CompletedDeliveries = () => {
       ) : (
         <div className="overflow-x-auto">
           <table className="table table-zebra w-full">
-            <thead>
+            <thead className="bg-gray-600 text-white">
               <tr>
                 <th>Tracking ID</th>
                 <th>Title</th>

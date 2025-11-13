@@ -77,7 +77,7 @@ const PendingDeliveries = () => {
       ) : (
         <div className="overflow-x-auto">
           <table className="table table-zebra w-full">
-            <thead>
+            <thead className="bg-gray-600 text-white">
               <tr>
                 <th>Tracking ID</th>
                 <th>Title</th>
@@ -104,7 +104,7 @@ const PendingDeliveries = () => {
                   <td>
                     {parcel.delivery_status === "rider_assigned" && (
                       <button
-                        className="btn btn-sm btn-primary text-black"
+                        className="btn btn-sm btn-primary text-white"
                         onClick={() => handleStatusUpdate(parcel, "in_transit")}
                       >
                         Mark Picked Up

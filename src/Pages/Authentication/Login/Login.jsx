@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const {
@@ -16,12 +17,12 @@ const Login = () => {
 
   const onSubmit =(data)=>{
     signIn(data.email,data.password)
-    .then(result =>{
-      console.log(result.user);
+    .then(() =>{
+      toast.success("Login Success !")
       navigate(from);
     })
     .catch(error=>{
-      console.log(error);
+      toast.error(error.message)
     })
 
   }
