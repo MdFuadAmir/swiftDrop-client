@@ -1,4 +1,4 @@
-import { FaTruck, FaClock, FaMoneyBillWave, FaBoxOpen } from "react-icons/fa";
+import { FaTruck, FaMoneyBillWave, FaClock, FaBox } from "react-icons/fa";
 import DashboardTitle from "../../../Components/DashboardTitle/DashboardTitle";
 import { Chart } from "react-google-charts";
 import { DateRange } from "react-date-range";
@@ -6,16 +6,30 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import useUserRole from "../../../Hooks/useUserRole";
 import useAuth from "../../../Hooks/useAuth";
+// import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+// import { useQuery } from "@tanstack/react-query";
+import Loading from "../../../Components/Loading/Loading";
 const RiderDashboard = () => {
   const { user } = useAuth();
   const { role } = useUserRole();
+  // const axiosSecure = useAxiosSecure();
+
+  // const { data: stateData = {}, isLoading } = useQuery({
+  //   queryKey: ["riderStat", user?.email],
+  //   enabled: !!user?.email,
+  //   queryFn: async () => {
+  //     const { data } = await axiosSecure.get(`/rider-stat/${user?.email}`);
+  //     return data;
+  //   },
+  // });
+  // console.log(stateData);
+
   const data = [
     ["Task", "Hours per Day"],
-    ["Work", 9],
-    ["Eat", 2],
-    ["Commute", 2],
-    ["Watch TV", 2],
-    ["Sleep", 7],
+    ["My Earning", 9],
+    ["Total Percel", 2],
+    ["Delevered", 2],
+    ["Pending", 2],
   ];
 
   const options = {
@@ -41,41 +55,48 @@ const RiderDashboard = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Assigned Deliveries */}
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center">
-            <FaBoxOpen className="text-gray-700 text-3xl mx-auto mb-3" />
-            <h2 className="text-lg font-semibold text-gray-800">
-              Assigned Parcels
-            </h2>
-            <p className="text-2xl font-bold text-gray-900 mt-2">127</p>
-            <p className="text-gray-500 text-sm">5 new today</p>
+          <div className="bg-white p-4 rounded-xl shadow-md flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-green-100">
+              <FaMoneyBillWave className="text-green-500 text-4xl" />
+            </div>
+            <div className="text-end">
+              <h2 className="text-lg font-semibold text-gray-800">
+                My Earning
+              </h2>
+              <p className="text-2xl font-bold text-gray-900 mt-2">৳ --</p>
+            </div>
           </div>
-
+          {/* Total Parcels */}
+          <div className="bg-white p-4 rounded-xl shadow-md flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-indigo-100">
+              <FaBox className="text-indigo-500 text-4xl" />
+            </div>
+            <div className="text-end">
+              <h2 className="text-lg font-semibold text-gray-800">
+                Total Parcels
+              </h2>
+              <p className="text-2xl font-bold text-gray-900 mt-2">--</p>
+            </div>
+          </div>
+          {/* Pending Deliveries */}
+          <div className="bg-white p-4 rounded-xl shadow-md flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-yellow-100">
+              <FaClock className="text-yellow-500 text-4xl" />
+            </div>
+            <div className="text-end">
+              <h2 className="text-lg font-semibold text-gray-800">Pending</h2>
+              <p className="text-2xl font-bold text-gray-900 mt-2">--</p>
+            </div>
+          </div>
           {/* Completed Deliveries */}
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center">
-            <FaTruck className="text-gray-700 text-3xl mx-auto mb-3" />
-            <h2 className="text-lg font-semibold text-gray-800">Completed</h2>
-            <p className="text-2xl font-bold text-gray-900 mt-2">102</p>
-            <p className="text-gray-500 text-sm">92% success rate</p>
-          </div>
-
-          {/* Average Delivery Time */}
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center">
-            <FaClock className="text-gray-700 text-3xl mx-auto mb-3" />
-            <h2 className="text-lg font-semibold text-gray-800">
-              Avg. Delivery Time
-            </h2>
-            <p className="text-2xl font-bold text-gray-900 mt-2">28 min</p>
-            <p className="text-gray-500 text-sm">On-time: 87%</p>
-          </div>
-
-          {/* Earnings */}
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center">
-            <FaMoneyBillWave className="text-gray-700 text-3xl mx-auto mb-3" />
-            <h2 className="text-lg font-semibold text-gray-800">
-              Total Earnings
-            </h2>
-            <p className="text-2xl font-bold text-gray-900 mt-2">$890</p>
-            <p className="text-gray-500 text-sm">+2% this week</p>
+          <div className="bg-white p-4 rounded-xl shadow-md flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-yellow-100">
+              <FaTruck className="text-yellow-500 text-4xl" />
+            </div>
+            <div className="text-end">
+              <h2 className="text-lg font-semibold text-gray-800">Delivered</h2>
+              <p className="text-2xl font-bold text-gray-900 mt-2">--</p>
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">

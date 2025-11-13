@@ -23,7 +23,7 @@ const CompletedDeliveries = () => {
   const calculateEarning = (parcel) => {
     const cost = Number(parcel.cost);
     if (parcel.sender_center === parcel.receiver_center) {
-      return cost * 0.4;
+      return cost * 0.5;
     } else {
       return cost * 0.8;
     }

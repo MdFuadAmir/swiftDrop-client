@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { FaUserCircle, FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaEdit, FaSave, FaTimes } from "react-icons/fa";
+import useAuth from "../../../Hooks/useAuth";
 
 const UpdateProfile = () => {
+  const {user} = useAuth();
    const [isEditing, setIsEditing] = useState(false);
-
   const [userData, setUserData] = useState({
-    name: "Md Fuad",
-    email: "mdfuad@gmail.com",
-    phone: "017XXXXXXXX",
-    address: "Dhaka, Bangladesh",
-    photo:
-      "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", // placeholder profile photo
+    name: `${user?.displayName}`,
+    email: `${user?.email}`,
+    phone: `${user?.phone}`,
+    address: `${user?.address}`,
+    photo:`${user?.photoURL}`, // placeholder profile photo
   });
 
   const handleChange = (e) => {

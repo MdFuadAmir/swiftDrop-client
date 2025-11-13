@@ -12,11 +12,9 @@ const UserDashboard = () => {
   const { role } = useUserRole();
   const data = [
     ["Task", "Hours per Day"],
-    ["Work", 9],
-    ["Eat", 2],
-    ["Commute", 2],
-    ["Watch TV", 2],
-    ["Sleep", 7],
+    ["Total Spent", 9],
+    ["Total parcel", 5],
+    ["Delivered", 3]
   ];
 
   const options = {
@@ -26,7 +24,7 @@ const UserDashboard = () => {
     <div>
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-          <DashboardTitle title={"Your Delivery Summary"} />
+          <DashboardTitle title={`Welcome Back, ${user?.displayName}!`} />
           <div className="bg-gray-300 px-6 py-2 rounded flex items-center gap-3">
             <img
               src={user?.photoURL}
@@ -42,41 +40,43 @@ const UserDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Total Orders */}
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center">
-            <FaBoxOpen className="text-gray-700 text-3xl mx-auto mb-3" />
-            <h2 className="text-lg font-semibold text-gray-800">
-              Total Orders
+          {/* Total Spent */}
+          <div className="bg-white p-4 rounded-xl shadow-md flex justify-between items-center">
+            <div className="bg-green-100 p-4 rounded-xl">
+            <FaMoneyBillWave className="text-green-500 text-4xl" />
+            </div>
+            <div className="text-end">
+              <h2 className="text-lg font-semibold text-gray-800">
+              Total Spent
+            </h2>
+            <p className="text-2xl font-bold text-gray-900 mt-2">$120</p>
+            </div>
+          </div>
+          {/* Total parcel */}
+          <div className="bg-white p-4 rounded-xl shadow-md flex justify-between items-center">
+            <div className="bg-indigo-100 p-4 rounded-xl">
+            <FaBoxOpen className="text-indigo-500 text-4xl" />
+            </div>
+            <div className="text-end">
+              <h2 className="text-lg font-semibold text-gray-800">
+              Total parcel
             </h2>
             <p className="text-2xl font-bold text-gray-900 mt-2">24</p>
-            <p className="text-gray-500 text-sm">2 pending deliveries</p>
+            </div>
           </div>
-
           {/* Delivered Parcels */}
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center">
-            <FaTruck className="text-gray-700 text-3xl mx-auto mb-3" />
-            <h2 className="text-lg font-semibold text-gray-800">Delivered</h2>
-            <p className="text-2xl font-bold text-gray-900 mt-2">18</p>
-            <p className="text-gray-500 text-sm">94% delivery success</p>
-          </div>
-
-          {/* Total Spent */}
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center">
-            <FaMoneyBillWave className="text-gray-700 text-3xl mx-auto mb-3" />
-            <h2 className="text-lg font-semibold text-gray-800">Total Spent</h2>
-            <p className="text-2xl font-bold text-gray-900 mt-2">$120</p>
-            <p className="text-gray-500 text-sm">+2% from last month</p>
-          </div>
-
-          {/* Delivery History */}
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center">
-            <FaHistory className="text-gray-700 text-3xl mx-auto mb-3" />
-            <h2 className="text-lg font-semibold text-gray-800">
-              Delivery History
+          <div className="bg-white p-4 rounded-xl shadow-md flex justify-between items-center">
+            <div className="bg-yellow-100 p-4 rounded-xl">
+            <FaTruck className="text-yellow-500 text-4xl" />
+            </div>
+            <div className="text-end">
+              <h2 className="text-lg font-semibold text-gray-800">
+             Delivered
             </h2>
-            <p className="text-2xl font-bold text-gray-900 mt-2">24 Orders</p>
-            <p className="text-gray-500 text-sm">Last delivered: 2 days ago</p>
+            <p className="text-2xl font-bold text-gray-900 mt-2">24</p>
+            </div>
           </div>
+          
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
           <div className="p-4 col-span-2 bg-gray-300 rounded-xl shadow-xl">
