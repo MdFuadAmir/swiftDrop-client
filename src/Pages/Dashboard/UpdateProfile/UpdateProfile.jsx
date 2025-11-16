@@ -24,7 +24,6 @@ const UpdateProfile = () => {
 
   const handleSave = () => {
     setIsEditing(false);
-    console.log("Updated Data:", userData);
   };
 
     return (

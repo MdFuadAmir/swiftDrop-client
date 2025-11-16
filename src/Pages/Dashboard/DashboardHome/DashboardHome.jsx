@@ -1,3 +1,4 @@
+import Loading from "../../../Components/Loading/Loading";
 import useUserRole from "../../../Hooks/useUserRole";
 import Forbidden from "../../Forbidden/Forbidden";
 import AdminDashboard from "./AdminDashboard";
@@ -8,7 +9,7 @@ import UserDashboard from "./UserDashboard";
 const DashboardHome = () => {
     const {role, roleLoading} = useUserRole();
     if(roleLoading){
-        return <span className="loading loading-ball loading-xl"></span>;
+        return <Loading/>;
     }
     if(role === 'user'){
         return <UserDashboard></UserDashboard>

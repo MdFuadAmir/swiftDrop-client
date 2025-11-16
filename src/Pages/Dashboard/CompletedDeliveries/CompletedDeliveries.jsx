@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
 const CompletedDeliveries = () => {
   const axiosSecure = useAxiosSecure();
@@ -52,10 +53,10 @@ const CompletedDeliveries = () => {
       if (result.isConfirmed) {
         cashout(parcelId)
           .then(() => {
-            Swal.fire("Success", "Cashout completed.", "success");
+            toast.success("Success", "Cashout completed.", "success")
           })
-          .catch(() => {
-            Swal.fire("Error", "Failed to cash out. Try again.", "error");
+          .catch((error) => {
+            toast.error(error.message);
           });
       }
     });

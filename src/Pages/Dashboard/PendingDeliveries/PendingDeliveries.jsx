@@ -3,6 +3,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import useTrackingLoggers from "../../../Hooks/useTrackingLoggers";
+import toast from "react-hot-toast";
 
 const PendingDeliveries = () => {
   const axiosSecure = useAxiosSecure();
@@ -59,8 +60,7 @@ const PendingDeliveries = () => {
             });
           })
           .catch((error) => {
-            Swal.fire("Error!", "Failed to update status.", "error");
-            console.error(error);
+            toast.error(error.message);
           });
       }
     });

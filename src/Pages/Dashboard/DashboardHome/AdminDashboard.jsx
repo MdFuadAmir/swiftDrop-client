@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../Components/Loading/Loading";
 const AdminDashboard = () => {
   const { user } = useAuth();
-  const { role } = useUserRole();
+  const { role,roleLoading } = useUserRole();
   const axiosSecure = useAxiosSecure();
   const { data: stateData = {}, isLoading } = useQuery({
     queryKey: ["stateData"],
@@ -29,8 +29,7 @@ const AdminDashboard = () => {
   const options = {
     title: "Daily Progress",
   };
-  console.log(user);
-  if (isLoading) {
+  if (isLoading || roleLoading) {
     return <Loading />;
   }
 

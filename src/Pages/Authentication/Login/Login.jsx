@@ -24,7 +24,6 @@ const Login = () => {
     .catch(error=>{
       toast.error(error.message)
     })
-
   }
 
   return (

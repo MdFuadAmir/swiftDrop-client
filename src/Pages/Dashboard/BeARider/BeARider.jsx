@@ -29,7 +29,6 @@ const BeARider = () => {
       status: "panding",
       created_at: new Date().toISOString(),
     };
-    console.log("rider application", riderData);
     axiosSecure.post("/riders", riderData)
     .then((res) => {
       if (res.data.insertedId) {

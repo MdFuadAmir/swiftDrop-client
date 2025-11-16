@@ -6,35 +6,34 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import useUserRole from "../../../Hooks/useUserRole";
 import useAuth from "../../../Hooks/useAuth";
-// import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-// import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../Components/Loading/Loading";
 const RiderDashboard = () => {
   const { user } = useAuth();
-  const { role } = useUserRole();
-  // const axiosSecure = useAxiosSecure();
+  const { role ,roleLoading} = useUserRole();
+  const axiosSecure = useAxiosSecure();
 
-  // const { data: stateData = {}, isLoading } = useQuery({
-  //   queryKey: ["riderStat", user?.email],
-  //   enabled: !!user?.email,
-  //   queryFn: async () => {
-  //     const { data } = await axiosSecure.get(`/rider-stat/${user?.email}`);
-  //     return data;
-  //   },
-  // });
-  // console.log(stateData);
-
-  const data = [
-    ["Task", "Hours per Day"],
-    ["My Earning", 9],
-    ["Total Percel", 2],
-    ["Delevered", 2],
-    ["Pending", 2],
-  ];
-
+  const { data: stateData = {}, isLoading } = useQuery({
+    queryKey: ["riderStat", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const { data } = await axiosSecure.get(`/rider-stat/${user?.email}`);
+      return data;
+    },
+  });
+const data = [
+  ["Task", "Count"],
+  ["Total Parcel", stateData.totalParcels || 0],
+  ["Delivered", stateData.delivered || 0],
+  ["Pending", stateData.pending || 0],
+];
   const options = {
     title: "My Daily Activities",
   };
+  if(isLoading || roleLoading){
+    return <Loading/>
+  }
   return (
     <div>
       <div className="max-w-5xl mx-auto">
@@ -63,7 +62,7 @@ const RiderDashboard = () => {
               <h2 className="text-lg font-semibold text-gray-800">
                 My Earning
               </h2>
-              <p className="text-2xl font-bold text-gray-900 mt-2">৳ --</p>
+              <p className="text-2xl font-bold text-gray-900 mt-2">৳ {stateData.totalEarnings || 0}</p>
             </div>
           </div>
           {/* Total Parcels */}
@@ -75,7 +74,7 @@ const RiderDashboard = () => {
               <h2 className="text-lg font-semibold text-gray-800">
                 Total Parcels
               </h2>
-              <p className="text-2xl font-bold text-gray-900 mt-2">--</p>
+              <p className="text-2xl font-bold text-gray-900 mt-2">{stateData.totalParcels || 0}</p>
             </div>
           </div>
           {/* Pending Deliveries */}
@@ -85,7 +84,7 @@ const RiderDashboard = () => {
             </div>
             <div className="text-end">
               <h2 className="text-lg font-semibold text-gray-800">Pending</h2>
-              <p className="text-2xl font-bold text-gray-900 mt-2">--</p>
+              <p className="text-2xl font-bold text-gray-900 mt-2">{stateData.pending || 0}</p>
             </div>
           </div>
           {/* Completed Deliveries */}
@@ -95,7 +94,7 @@ const RiderDashboard = () => {
             </div>
             <div className="text-end">
               <h2 className="text-lg font-semibold text-gray-800">Delivered</h2>
-              <p className="text-2xl font-bold text-gray-900 mt-2">--</p>
+              <p className="text-2xl font-bold text-gray-900 mt-2">{stateData.delivered || 0}</p>
             </div>
           </div>
         </div>

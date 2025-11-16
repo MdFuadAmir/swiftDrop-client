@@ -12,7 +12,7 @@ const banners = [
     title: "Fast & Reliable Parcel Delivery",
     subtitle: "Send packages across town or country in no time",
     ctaText: "Send a Parcel",
-    ctaLink: "/send-parcel",
+    ctaLink: "/sendParcel",
     image: img1,
   },
   {
@@ -20,7 +20,7 @@ const banners = [
     title: "Track Your Shipment Easily",
     subtitle: "Real-time updates on your parcel's journey",
     ctaText: "Track Now",
-    ctaLink: "/track",
+    ctaLink: "/dashboard/track",
     image: img2,
   },
   {
@@ -28,7 +28,7 @@ const banners = [
     title: "Flexible Delivery Options",
     subtitle: "Choose same-day, next-day, or scheduled delivery",
     ctaText: "View Services",
-    ctaLink: "/services",
+    ctaLink: "/",
     image: img3,
   },
   {
@@ -36,7 +36,7 @@ const banners = [
     title: "Trusted by Thousands",
     subtitle: "Safe, insured, and handled with care",
     ctaText: "Get Started",
-    ctaLink: "/signup",
+    ctaLink: "/signUp",
     image: img4,
   },
 ];

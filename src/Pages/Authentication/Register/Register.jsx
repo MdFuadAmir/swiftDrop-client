@@ -34,7 +34,7 @@ const Register = () => {
     creatUser(data.email, data.password)
       .then(async (result) => {
         const user = result.user;
-        toast.success("Creat Account Success !")
+
         const userInfo = {
           email: user.email,
           role: "user", //default role
@@ -42,6 +42,7 @@ const Register = () => {
           last_log_in: new Date().toISOString(),
         };
         await axiosInstance.post("/users", userInfo);
+        toast.success("Creat Account Success !");
 
         // update user profile in firebase
         const userProfile = {
@@ -57,7 +58,7 @@ const Register = () => {
           });
       })
       .catch((error) => {
-         toast.error(error.message);
+        toast.error(error.message);
       });
   };
 

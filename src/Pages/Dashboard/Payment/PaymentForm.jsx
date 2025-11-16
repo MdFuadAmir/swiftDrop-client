@@ -6,6 +6,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import useAuth from "../../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import useTrackingLoggers from "../../../Hooks/useTrackingLoggers";
+import toast from "react-hot-toast";
 
 const PaymentForm = () => {
   const { user } = useAuth();
@@ -15,7 +16,8 @@ const PaymentForm = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const {logTracking} = useTrackingLoggers();
+  const { logTracking } = useTrackingLoggers();
+  const [processing, setProcessing] = useState(false);
 
   const { isPending, data: parcelInfo = {} } = useQuery({
     queryKey: ["parcels", parcelId],
@@ -34,11 +36,14 @@ const PaymentForm = () => {
   // handle submit button start
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setProcessing(true);
     if (!stripe || !elements) {
+      setProcessing(false);
       return;
     }
     const card = elements.getElement(CardElement);
     if (!card) {
+      setProcessing(false);
       return;
     }
     const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -47,9 +52,11 @@ const PaymentForm = () => {
     });
     if (error) {
       setError(error.message);
+      setProcessing(false);
+      return;
     } else {
+      toast.success(paymentMethod)
       setError("");
-      console.log(paymentMethod);
       //step-2:  creat payment intent
       const res = await axiosSecure.post("/create-payment-intent", {
         amountInCents,
@@ -68,7 +75,7 @@ const PaymentForm = () => {
         },
       });
       if (result.error) {
-        console.log(result.error.message);
+        toast.error(result.error.message)
       } else {
         setError("");
         if (result.paymentIntent.status === "succeeded") {
@@ -95,17 +102,17 @@ const PaymentForm = () => {
             });
             await logTracking({
               trackingId: parcelInfo.trackingId,
-              status:"Payment Done",
-              details:`Paid by ${user.displayName}`,
-              updated_by:user.email
-            })
+              status: "Payment Done",
+              details: `Paid by ${user.displayName}`,
+              updated_by: user.email,
+            });
             navigate("/dashboard/myParcels");
+            setProcessing(false);
           }
         }
       }
     }
   };
-  // handle submit button end
 
   return (
     <div className="">
@@ -114,13 +121,17 @@ const PaymentForm = () => {
         className=" space-y-4 bg-white p-6 rounded-xl shadow-xl w-full max-w-4xl mx-auto"
       >
         <CardElement className="p-2 border rounded"></CardElement>
-        <button
-          type="submit"
-          disabled={!stripe}
-          className="btn bg-green-500 w-full"
-        >
-          Pay Now {parcelInfo.cost}/=
-        </button>
+        {processing ? (
+          <span className="loading loading-ring loading-xl px-6 py-2 hover:bg-teal-500 bg-teal-600 rounded btn"></span>
+        ) : (
+          <button
+            type="submit"
+            disabled={!stripe}
+            className="btn bg-green-500 w-full"
+          >
+            Pay Now {parcelInfo.cost}/=
+          </button>
+        )}
         {error && <p className="text-red-500">{error}</p>}
       </form>
     </div>

@@ -1,17 +1,15 @@
 import axios from "axios";
 import useAuth from "./useAuth";
 import { useNavigate } from "react-router";
-
-
 const axiosSecure = axios.create({
-  baseURL: `http://localhost:3000`,
+  baseURL: import.meta.env.VITE_API_KEY,
+  withCredentials: true,
 });
 const useAxiosSecure = () => {
   const navigate = useNavigate();
     const {user,logOut} = useAuth();
-
     axiosSecure.interceptors.request.use((config) =>{
-        config.headers.Authorization = `Bearer ${user?.accessToken}`
+        config.headers.Authorization = `Bearer ${user.accessToken}`
         return config;
     },
     (error)=>{
@@ -42,4 +40,3 @@ const useAxiosSecure = () => {
 
 export default useAxiosSecure;
 
-// authorization

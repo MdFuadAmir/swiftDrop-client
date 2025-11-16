@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { FaUserMinus, FaUserShield } from "react-icons/fa";
 import DashboardTitle from "../../../Components/DashboardTitle/DashboardTitle";
+import toast from "react-hot-toast";
 
 const MakeAdmin = () => {
   const axiosSecure = useAxiosSecure();
@@ -45,7 +46,7 @@ const MakeAdmin = () => {
       await updateRole({ id, role: newRole });
       Swal.fire("Success", `${action} successfull`, "Success");
     } catch (error) {
-      Swal.fire("Error", "Failed to update user role", error);
+      toast.error(error.message);
     }
   };
 

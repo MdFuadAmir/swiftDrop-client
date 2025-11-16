@@ -2,20 +2,21 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import DashboardTitle from "../../../Components/DashboardTitle/DashboardTitle";
+import Loading from "../../../Components/Loading/Loading";
 
 const PaymentHistory = () => {
     const {user} = useAuth();
     const axiosSecure = useAxiosSecure();
 
-    const {isPending,data:payments=[]} = useQuery({
+    const {isPending,data:payments=[],isLoading} = useQuery({
         queryKey:['payments', user.email],
         queryFn:async()=>{
             const res = await axiosSecure.get(`/payments?email=${user.email}`);
             return res.data;
         }
     })
-    if(isPending){
-        return <span className="loading loading-bars loading-xl"></span>
+    if(isPending || isLoading){
+        return <Loading/>
     }
 
     return (

@@ -1,11 +1,11 @@
-import { FaFastForward, FaFlask, FaHeadset, FaLock, FaTable } from "react-icons/fa";
-import { FaLocationPin } from "react-icons/fa6";
+import { FaBolt, FaHeadset, FaLock, } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 
 
 const WhyChooseUs = () => {
   const features = [
     {
-      icon: <FaFastForward className="text-5xl text-amber-400 mb-3" />,
+      icon: <FaBolt className="text-5xl text-amber-400 mb-3" />,
       title: "Fast Delivery",
       desc: "Guaranteed on-time delivery to every destination.",
     },
@@ -20,7 +20,7 @@ const WhyChooseUs = () => {
       desc: "We’re always here when you need help.",
     },
     {
-      icon: <FaLocationPin className="text-5xl text-amber-400 mb-3" />,
+      icon: <FaLocationDot className="text-5xl text-amber-400 mb-3" />,
       title: "Nationwide Coverage",
       desc: "We deliver across every major city in Bangladesh.",
     },

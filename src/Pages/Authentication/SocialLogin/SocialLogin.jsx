@@ -24,6 +24,7 @@ const SocialLogin = () => {
           last_log_in: new Date().toISOString(),
         };
         await axiosInstance.post('/users',userInfo);
+        toast.success("Login Successful!");
         navigate(from);
       })
       .catch((error) => {

@@ -5,6 +5,7 @@ import { FaTimesCircle } from "react-icons/fa";
 import ErrorPage from "../../../Components/ErrorPage/ErrorPage";
 import Loading from "../../../Components/Loading/Loading";
 import DashboardTitle from "../../../Components/DashboardTitle/DashboardTitle";
+import toast from "react-hot-toast";
 
 const ActiveRiders = () => {
   const axiosSecure = useAxiosSecure();
@@ -35,12 +36,11 @@ const ActiveRiders = () => {
         confirmButtonText: "Yes, deactivate!",
       });
       if (!confirm.isConfirmed) return;
-
       await axiosSecure.patch(`/riders/${id}/status`, { status: action });
-      Swal.fire("Done!", "Rider has been deactivated.", "success");
+      toast.success("Done!", "Rider has been deactivated.", "success")
       refetch(); // refresh list
     } catch (error) {
-      Swal.fire("Error", "Could not deactivate rider", error);
+      toast.error(error.message);
     }
   };
 
